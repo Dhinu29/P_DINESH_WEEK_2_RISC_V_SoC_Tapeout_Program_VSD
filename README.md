@@ -32,6 +32,9 @@ This design is essential for devices where
 # 1️⃣ Introduction to VSDBabySoC
 **The VSDBabySoC (or BabySoC)** is a small yet highly capable SoC with a primary objective of being an educational platform. It was designed to facilitate the simultaneous testing of three specific open-source intellectual property (IP) cores for the first time while also allowing for the calibration of its analog components.
 
+<img width="1248" height="698" alt="image" src="https://github.com/user-attachments/assets/e544b214-f91e-4afe-bfcb-0cb1155be1f8" />
+
+
 # 2️⃣ BabySoC Key Components
 The BabySoC integrates both digital and analog parts, including:
 
@@ -103,4 +106,198 @@ The main use of the BabySoC is tied to its capability for digital-analog interfa
 | Multimedia Output | Converts processed digital values into audio or video signals. |
 | External Device Connectivity | Analog output can be fed to TVs, mobile phones, and other devices. |
 | Educational Platform | Sky130-based SoC provides a well-documented platform for learning modern embedded systems and digital-analog interfacing. |
+
+# Project Structure
+- **src/include/** - Contains header files (*.vh) with necessary macros or parameter definitions.
+- **src/module/** - Contains Verilog files for each module in the SoC design.
+- **output/** - Directory where compiled outputs and simulation files will be generated.
+
+ #Setup and Prepare Project Directory
+  Clone or set up the directory structure as follows:
+
+```
+https://github.com/manili/VSDBabySoC.git
+```
+
+```
+bash
+├── copy_past.txt
+├── images
+│   ├── centralized_avsddac.png
+│   ├── inside_dac.png
+│   ├── inside_pll.png
+│   ├── openlane_flow.png
+│   ├── physical_design.png
+│   ├── post_routing_sim.png
+│   ├── post_synth_sim.png
+│   ├── pre_synth_sim.png
+│   ├── rvmyth_layout.png
+│   ├── selected_dac.png
+│   ├── selected_pll.png
+│   ├── vsdbabysoc_block_diagram.png
+│   └── vsdbabysoc_layout.png
+├── LICENSE
+├── Makefile
+├── my_project_images
+├── output
+│   ├── post_synth_sim
+│   │   ├── post_synth_sim.out
+│   │   └── post_synth_sim.vcd
+│   └── pre_synth_sim
+│       ├── mkdir
+│       ├── post_synth_sim.out
+│       └── pre_synth_sim.out
+├── output_@
+│   ├── post_synth_sim
+│   │   ├── post_routing_sim.vcd
+│   │   └── post_synth_sim.out
+│   └── pre_synth_sim
+│       ├── post_synth_sim.vcd
+│       ├── pre_synth_sim.out
+│       └── pre_synth_sim.vcd
+├── README.md
+├── sp_env
+│   ├── bin
+│   │   ├── activate
+│   │   ├── activate.csh
+│   │   ├── activate.fish
+│   │   ├── Activate.ps1
+│   │   ├── normalizer
+│   │   ├── pip
+│   │   ├── pip3
+│   │   ├── pip3.12
+│   │   ├── python -> python3
+│   │   ├── python3 -> /usr/bin/python3
+│   │   ├── python3.12 -> python3
+│   │   └── sandpiper-saas
+│   ├── include
+│   │   └── python3.12
+│   ├── lib
+│   │   └── python3.12
+│   │       └── site-packages
+│   ├── lib64 -> lib
+│   └── pyvenv.cfg
+├── src
+│   ├── gds
+│   │   ├── avsddac.gds
+│   │   └── avsdpll.gds
+│   ├── gls_model
+│   │   ├── primitives.v
+│   │   └── sky130_fd_sc_hd.v
+│   ├── include
+│   │   ├── sandpiper_gen.vh
+│   │   ├── sandpiper.vh
+│   │   ├── sp_default.vh
+│   │   └── sp_verilog.vh
+│   ├── layout_conf
+│   │   ├── rvmyth
+│   │   │   ├── config.tcl
+│   │   │   └── pin_order.cfg
+│   │   └── vsdbabysoc
+│   │       ├── config.tcl
+│   │       ├── macro.cfg
+│   │       └── pin_order.cfg
+│   ├── lef
+│   │   ├── avsddac.lef
+│   │   └── avsdpll.lef
+│   ├── lib
+│   │   ├── avsddac.lib
+│   │   ├── avsdpll.lib
+│   │   └── sky130_fd_sc_hd__tt_025C_1v80.lib
+│   ├── module
+│   │   ├── avsddac.v
+│   │   ├── avsdpll.v
+│   │   ├── clk_gate.v
+│   │   ├── primitives.v
+│   │   ├── pseudo_rand_gen.sv
+│   │   ├── pseudo_rand.sv
+│   │   ├── rvmyth_gen.v
+│   │   ├── rvmyth.tlv
+│   │   ├── rvmyth.v
+│   │   ├── sky130_fd_sc_hd.v
+│   │   ├── testbench.rvmyth.post-routing.v
+│   │   ├── testbench.v
+│   │   ├── vsdbabysoc.synth.v
+│   │   └── vsdbabysoc.v
+│   ├── script
+│   │   ├── sta.conf
+│   │   ├── verilog_to_lib.pl
+│   │   └── yosys.ys
+│   └── sdc
+│       ├── vsdbabysoc_layout.sdc
+│       └── vsdbabysoc_synthesis.sdc
+├── vsdbabysoc.synth_1.v
+└── vsdbabysoc.synth.v
+```
+
+# 🔗 Cloning the Project
+To begin, clone the VSDBabySoC repository using the following command:
+```
+git clone https://github.com/manili/VSDBabySoC.git
+
+cd ~/VLSI/VSDBabySoC/
+
+ls VSDBabySoC/
+images  LICENSE  Makefile  README.md  src
+
+DINESH@UBUNTU:~/Desktop/my_project$ cd VSDBabySoC/
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC$ ls
+copy_past.txt  images  LICENSE  Makefile  my_project_images  output  output_@  README.md  sp_env  src  vsdbabysoc.synth_1.v  vsdbabysoc.synth.v
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC$ cd src/module/
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/src/module$ l
+avsddac.v  clk_gate.v    pseudo_rand_gen.sv  rvmyth_gen.v  rvmyth.v           testbench.rvmyth.post-routing.v  vsdbabysoc.synth.v
+avsdpll.v  primitives.v  pseudo_rand.sv      rvmyth.tlv    sky130_fd_sc_hd.v  testbench.v*                     vsdbabysoc.v
+```
+
+# TLV to Verilog Conversion for RVMYTH
+Initially, you will see only the rvmyth.tlv file inside src/module/, since the RVMYTH core is written in TL-Verilog.
+To convert it into a .v file for simulation, follow the steps below:
+🔧 TLV to Verilog Conversion Steps
+
+```
+# Step 1: Install python3-venv (if not already installed)
+sudo apt update
+sudo apt install python3-venv python3-pip
+
+# Step 2: Create and activate a virtual environment
+cd VSDBabySoC/
+python3 -m venv sp_env
+source sp_env/bin/activate
+
+# Step 3: Install SandPiper-SaaS inside the virtual environment
+pip install pyyaml click sandpiper-saas
+
+# Step 4: Convert rvmyth.tlv to Verilog
+sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
+```
+#Simulation Steps
+1️⃣ Pre-Synthesis Simulation:
+``` 
+Run the following command to perform a pre-synthesis simulation:
+iverilog -o output/pre_synth_sim/pre_synth_sim.out   -DPRE_SYNTH_SIM   -I src/include   -I src/module   src/module/testbench.v
+```
+
+```
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd pre_synth_sim/
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/pre_synth_sim$ ls
+mkdir  post_synth_sim.out  pre_synth_sim.out
+```
+- Output: output/pre_synth_sim/pre_synth_sim.vcd (waveform if $dumpfile is used in testbench).
+- This is your reference RTL behavior.
+
+2️⃣ Post-Synthesis Simulation
+```
+Run this command to simulate the synthesized netlist (post-synthesis):
+iverilog -o output/post_synth_sim/post_synth_sim.out -DPOST_SYNTH_SIM  -I src/include/ -I src/module/ src/module/testbench.v
+```
+```
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd post_synth_sim/
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/post_synth_sim$ ls
+post_synth_sim.out  post_synth_sim.vcd
+
+```
+
+
+
+
 
