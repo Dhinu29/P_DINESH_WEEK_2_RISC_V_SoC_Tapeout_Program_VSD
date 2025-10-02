@@ -107,6 +107,7 @@ The main use of the BabySoC is tied to its capability for digital-analog interfa
 | External Device Connectivity | Analog output can be fed to TVs, mobile phones, and other devices. |
 | Educational Platform | Sky130-based SoC provides a well-documented platform for learning modern embedded systems and digital-analog interfacing. |
 
+# ⚡VSDBabySoC Simulation & Synthesis Flow
 # Project Structure
 - **src/include/** - Contains header files (*.vh) with necessary macros or parameter definitions.
 - **src/module/** - Contains Verilog files for each module in the SoC design.
@@ -272,8 +273,9 @@ sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --
 ```
 #Simulation Steps
 1️⃣ Pre-Synthesis Simulation:
-``` 
+ 
 Run the following command to perform a pre-synthesis simulation:
+```
 iverilog -o output/pre_synth_sim/pre_synth_sim.out   -DPRE_SYNTH_SIM   -I src/include   -I src/module   src/module/testbench.v
 ```
 
@@ -286,17 +288,31 @@ mkdir  post_synth_sim.out  pre_synth_sim.out
 - This is your reference RTL behavior.
 
 2️⃣ Post-Synthesis Simulation
-```
+
 Run this command to simulate the synthesized netlist (post-synthesis):
+```
 iverilog -o output/post_synth_sim/post_synth_sim.out -DPOST_SYNTH_SIM  -I src/include/ -I src/module/ src/module/testbench.v
 ```
+
 ```
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd post_synth_sim/
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/post_synth_sim$ ls
 post_synth_sim.out  post_synth_sim.vcd
-
 ```
+# Synthesis Process
 
+  - Tool: Yosys
+  - Generate synthesized netlist: vsdbabysoc.synth.v
+  -  Main steps:
+  -  Read RTL modules
+      - Synthesize top-level module
+      - Write synthesized gate-level Verilog
+
+# Pre-Synthesis Simulation
+   - Compile RTL with Icarus Verilog
+   - Macro: -DPRE_SYNTH_SIM
+   - Purpose: Verify RTL functionality before synthesis
+   - Output: output/pre_synth_sim/pre_synth_sim.out and waveform .vcd
 
 
 
