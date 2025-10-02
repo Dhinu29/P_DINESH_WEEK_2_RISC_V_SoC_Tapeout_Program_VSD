@@ -271,21 +271,72 @@ pip install pyyaml click sandpiper-saas
 # Step 4: Convert rvmyth.tlv to Verilog
 sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
 ```
-#Simulation Steps
+# VSDBabySoC RTL to Gate-Level Simulation Flow
+
 1️⃣ Pre-Synthesis Simulation:
  
 Run the following command to perform a pre-synthesis simulation:
 ```
 iverilog -o output/pre_synth_sim/pre_synth_sim.out   -DPRE_SYNTH_SIM   -I src/include   -I src/module   src/module/testbench.v
 ```
+<img width="1920" height="447" alt="PRE_POST_SYNTH_SIM_COMPILE" src="https://github.com/user-attachments/assets/3b22f183-d7d6-445c-9c35-c450e7b12808" />
 
 ```
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd pre_synth_sim/
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/pre_synth_sim$ ls
 mkdir  post_synth_sim.out  pre_synth_sim.out
 ```
+<img width="1902" height="878" alt="PRE_SYNTH_SCREENSHOT_2" src="https://github.com/user-attachments/assets/003d7024-f521-4cb8-81b4-5ac5592db595" />
+
 - Output: output/pre_synth_sim/pre_synth_sim.vcd (waveform if $dumpfile is used in testbench).
 - This is your reference RTL behavior.
+
+2️⃣ RTL Synthesis using Yosys
+```
+DINESH@UBUNTU:~/Desktop/my_project$ cd VSDBabySoC/
+DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC$ yosys
+```
+```
+yosys> read_verilog  -sv -I src/include/ -I src/module/ src/module/vsdbabysoc.v src/module/clk_gate.v src/module/rvmyth.v
+
+yosys> read_liberty -lib /home/DINESH/Desktop/Open_Source_EDA_Tool/yosys/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_liberty -lib src/lib/avsddac.lib
+
+read_liberty -lib src/lib/avsdpll.lib
+
+read_liberty -lib src/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+synth -top vsdbabysoc
+
+write_verilog vsdbabysoc.synth.v
+
+abc -liberty src/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show 
+```
+<img width="1917" height="830" alt="image" src="https://github.com/user-attachments/assets/64c29aa6-3b43-4851-b258-ca2044340033" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 2️⃣ Post-Synthesis Simulation
 
@@ -314,6 +365,52 @@ post_synth_sim.out  post_synth_sim.vcd
    - Purpose: Verify RTL functionality before synthesis
    - Output: output/pre_synth_sim/pre_synth_sim.out and waveform .vcd
 
+# Post-Synthesis Simulation
+   - Compile synthesized netlist + standard cells with Icarus Verilog
+   - Macro: -DPOST_SYNTH_SIM
+   - Purpose: Verify gate-level behavior matches RTL
+   - Output: output/post_synth_sim/post_synth_sim.out and waveform .vcd
+
+#Waveform Verification
+    - Tool: GTKWave
+    - Compare pre- and post-synthesis .vcd files
+    - Ensure all signals match to confirm correct synthesis
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
