@@ -32,7 +32,15 @@ This design is essential for devices where
 # 1️⃣ Introduction to VSDBabySoC
 **The VSDBabySoC (or BabySoC)** is a small yet highly capable SoC with a primary objective of being an educational platform. It was designed to facilitate the simultaneous testing of three specific open-source intellectual property (IP) cores for the first time while also allowing for the calibration of its analog components.
 
+Initialization and Clock Generation: Upon receiving an initial input signal, BabySoC activates the PLL. The PLL generates a stable and synchronized clock signal, which is essential for coordinating the activities of the RVMYTH processor and DAC. By synchronizing the system, the PLL ensures that all components operate in harmony, avoiding timing mismatches and ensuring data integrity.
+
+Data Processing in RVMYTH: Within BabySoC, RVMYTH plays a central role in processing data. Specifically, it utilizes its r17 register to hold and cycle through values that are used by the DAC. As RVMYTH executes instructions, it sequentially updates r17 with new data, preparing it for analog conversion. This cyclical processing allows BabySoC to generate continuous data streams that the DAC can output.
+
+Analog Signal Generation via DAC: The DAC receives the processed digital values from RVMYTH and converts them into an analog signal. This output, saved in a file named OUT, can be fed to external devices like TVs and mobile phones, which interpret the analog signals to produce sound or video. This functionality enables BabySoC to interface with consumer electronics, showcasing how digital data can drive multimedia outputs in real-world applications.
+
 <img width="1248" height="698" alt="image" src="https://github.com/user-attachments/assets/e544b214-f91e-4afe-bfcb-0cb1155be1f8" />
+<img width="885" height="535" alt="image" src="https://github.com/user-attachments/assets/19c90319-aeec-4f5f-a7c6-9a903cd9c3e3" />
+<img width="600" height="556" alt="image" src="https://github.com/user-attachments/assets/4b748df9-6923-4faf-bfd4-625a56c5cf8b" />
 
 
 # 2️⃣ BabySoC Key Components
@@ -55,7 +63,16 @@ The main use of the BabySoC is tied to its capability for digital-analog interfa
 
 - **Educational Platform:** The Sky130-technology-based SoC is intended to provide a highly documented platform for learning and experimentation in modern embedded systems design and digital-analog interfacing
 
+# 🚀Types of SoCs
 
+- Microcontroller-Based SoC: These SoCs are centered around a microcontroller, optimized for simple control tasks in everyday devices. Known for their low power consumption and high efficiency, they are ideal for applications such as home appliances, automotive systems, and IoT devices, where minimal processing and energy savings are crucial.
+
+- Microprocessor-Based SoC: Featuring a microprocessor, these SoCs are capable of handling more demanding workloads and running full operating systems. They are commonly used in smartphones, tablets, and other devices that require multitasking and support for complex applications, providing the higher computational power necessary for interactive and data-intensive tasks.
+
+- Application-Specific SoC (ASIC): Designed for specialized, high-performance tasks, these SoCs excel in areas such as graphics processing, network management, and multimedia applications. Optimized for speed and efficiency in their specific roles, they are often deployed in graphics cards, AI accelerators, and specialized industrial or financial systems that demand fast and precise computation.
+
+**SoC Design Flow**
+<img width="867" height="1305" alt="image" src="https://github.com/user-attachments/assets/b221cb54-f8c0-42ff-997a-0a76b463a822" />
 
 
 # ⚡Key Parts of a General System on a Chip (SoC)
@@ -351,6 +368,8 @@ post_synth_sim.out  post_synth_sim.vcd
 
   - Focuses only on verifying functionality based on the RTL code.
   - Zero-delay environment, with events occurring on the active clock edge.
+
+    
 **2️⃣Post-Synthesis Simulation (GLS):**
 
   - Uses the synthesized netlist (gate-level) to simulate both functionality and timing.
