@@ -331,7 +331,7 @@ yosys> read_verilog  -sv -I src/include/ -I src/module/ src/module/vsdbabysoc.v 
 yosys> read_liberty -lib /home/DINESH/Desktop/Open_Source_EDA_Tool/yosys/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 
 read_liberty -lib src/lib/avsddac.lib
-
+ 
 read_liberty -lib src/lib/avsdpll.lib
 
 read_liberty -lib src/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
