@@ -345,17 +345,17 @@ post_synth_sim.out  post_synth_sim.vcd
 ```
 <img width="1910" height="903" alt="POST_SYNTH_SIM_2" src="https://github.com/user-attachments/assets/abfdae8c-c282-471f-bb89-62d01b9c8b80" />
 
-# 4️⃣Waveform Verification
-   - Tool: GTKWave
-   - Compare pre- and post-synthesis .vcd files
-   - Ensure all signals match to confirm correct synthesis
- **PRE_SYNTH_SIM:**
-<img width="1917" height="906" alt="PRE_SYNTH_SCREENSHOT_1" src="https://github.com/user-attachments/assets/5d7f0375-63da-42fb-a8ab-d6ce5be45154" />
 
- ***POST_SYNTH_SIM:**
- <img width="1910" height="903" alt="POST_SYNTH_SIM_2" src="https://github.com/user-attachments/assets/6b16600a-3060-45c6-9321-31eef0f3e0c8" />
+# Why Pre-Synthesis and Post-Synthesis?
+**1️⃣Pre-Synthesis Simulation:**
 
+  - Focuses only on verifying functionality based on the RTL code.
+  - Zero-delay environment, with events occurring on the active clock edge.
+**2️⃣Post-Synthesis Simulation (GLS):**
 
+  - Uses the synthesized netlist (gate-level) to simulate both functionality and timing.
+  - Identifies timing violations and potential mismatches (e.g., unintended latches).
+  - Helps verify dynamic circuit behavior that static methods may miss.
 
 
 
