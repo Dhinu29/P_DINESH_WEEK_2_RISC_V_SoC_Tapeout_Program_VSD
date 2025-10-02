@@ -273,25 +273,37 @@ sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --
 ```
 # VSDBabySoC RTL to Gate-Level Simulation Flow
 
-1️⃣ Pre-Synthesis Simulation:
+# 1️⃣ Pre-Synthesis Simulation:
+   - Compile RTL with Icarus Verilog
+   - Macro: -DPRE_SYNTH_SIM
+   - Purpose: Verify RTL functionality before synthesis
+   - Output: output/pre_synth_sim/pre_synth_sim.out and waveform .vcd
  
 Run the following command to perform a pre-synthesis simulation:
 ```
 iverilog -o output/pre_synth_sim/pre_synth_sim.out   -DPRE_SYNTH_SIM   -I src/include   -I src/module   src/module/testbench.v
 ```
-<img width="1920" height="447" alt="PRE_POST_SYNTH_SIM_COMPILE" src="https://github.com/user-attachments/assets/3b22f183-d7d6-445c-9c35-c450e7b12808" />
+<img width="1920" height="482" alt="PRE_SYNTH_SCREENSHOT" src="https://github.com/user-attachments/assets/49168a05-ab4d-4c3c-adfe-49c63eb38e8c" />
 
 ```
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd pre_synth_sim/
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/pre_synth_sim$ ls
-mkdir  post_synth_sim.out  pre_synth_sim.out
+post_synth_sim.out  pre_synth_sim.out
 ```
+<img width="1917" height="906" alt="PRE_SYNTH_SCREENSHOT_1" src="https://github.com/user-attachments/assets/476f7abe-fa56-47c0-8a1c-9f80fc2059c4" />
+
 <img width="1902" height="878" alt="PRE_SYNTH_SCREENSHOT_2" src="https://github.com/user-attachments/assets/003d7024-f521-4cb8-81b4-5ac5592db595" />
 
 - Output: output/pre_synth_sim/pre_synth_sim.vcd (waveform if $dumpfile is used in testbench).
 - This is your reference RTL behavior.
 
-2️⃣ RTL Synthesis using Yosys
+# 2️⃣ RTL Synthesis using Yosys
+  - Tool: Yosys
+  - Generate synthesized netlist: vsdbabysoc.synth.v
+  -  Main steps:
+  -  Read RTL modules
+      - Synthesize top-level module
+      - Write synthesized gate-level Verilog
 ```
 DINESH@UBUNTU:~/Desktop/my_project$ cd VSDBabySoC/
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC$ yosys
@@ -317,69 +329,31 @@ show
 ```
 <img width="1917" height="830" alt="image" src="https://github.com/user-attachments/assets/64c29aa6-3b43-4851-b258-ca2044340033" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2️⃣ Post-Synthesis Simulation
-
-Run this command to simulate the synthesized netlist (post-synthesis):
+# 3️⃣ Post-Synthesis Simulation:
+   - Compile synthesized netlist + standard cells with Icarus Verilog
+   - Macro: -DPOST_SYNTH_SIM
+   - Purpose: Verify gate-level behavior matches RTL
+   - Output: output/post_synth_sim/post_synth_sim.out and waveform .vcd
 ```
 iverilog -o output/post_synth_sim/post_synth_sim.out -DPOST_SYNTH_SIM  -I src/include/ -I src/module/ src/module/testbench.v
 ```
-
+<img width="1893" height="461" alt="POST_SYNTH_SIM" src="https://github.com/user-attachments/assets/8f1531d5-04d1-4e6b-9bfd-22833d452493" />
 ```
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output$ cd post_synth_sim/
 DINESH@UBUNTU:~/Desktop/my_project/VSDBabySoC/output/post_synth_sim$ ls
 post_synth_sim.out  post_synth_sim.vcd
 ```
-# Synthesis Process
+<img width="1910" height="903" alt="POST_SYNTH_SIM_2" src="https://github.com/user-attachments/assets/abfdae8c-c282-471f-bb89-62d01b9c8b80" />
 
-  - Tool: Yosys
-  - Generate synthesized netlist: vsdbabysoc.synth.v
-  -  Main steps:
-  -  Read RTL modules
-      - Synthesize top-level module
-      - Write synthesized gate-level Verilog
+# 4️⃣Waveform Verification
+   - Tool: GTKWave
+   - Compare pre- and post-synthesis .vcd files
+   - Ensure all signals match to confirm correct synthesis
+ **PRE_SYNTH_SIM:**
+<img width="1917" height="906" alt="PRE_SYNTH_SCREENSHOT_1" src="https://github.com/user-attachments/assets/5d7f0375-63da-42fb-a8ab-d6ce5be45154" />
 
-# Pre-Synthesis Simulation
-   - Compile RTL with Icarus Verilog
-   - Macro: -DPRE_SYNTH_SIM
-   - Purpose: Verify RTL functionality before synthesis
-   - Output: output/pre_synth_sim/pre_synth_sim.out and waveform .vcd
-
-# Post-Synthesis Simulation
-   - Compile synthesized netlist + standard cells with Icarus Verilog
-   - Macro: -DPOST_SYNTH_SIM
-   - Purpose: Verify gate-level behavior matches RTL
-   - Output: output/post_synth_sim/post_synth_sim.out and waveform .vcd
-
-#Waveform Verification
-    - Tool: GTKWave
-    - Compare pre- and post-synthesis .vcd files
-    - Ensure all signals match to confirm correct synthesis
-
-
-
-
-
+ ***POST_SYNTH_SIM:**
+ <img width="1910" height="903" alt="POST_SYNTH_SIM_2" src="https://github.com/user-attachments/assets/6b16600a-3060-45c6-9321-31eef0f3e0c8" />
 
 
 
